@@ -1,20 +1,16 @@
-//package v4;
-// cc MaxTemperatureMapperV4 Mapper for maximum temperature example
 import java.io.IOException;
-
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-// vv MaxTemperatureMapperV4
 public class MaxTemperatureMapper
   extends Mapper<LongWritable, Text, Text, IntWritable> {
   
   enum Temperature {
     MALFORMED
   }
-
+  private final static IntWritable one = new IntWritable(1);
   private NcdcRecordParser parser = new NcdcRecordParser();
   
   @Override
@@ -23,14 +19,9 @@ public class MaxTemperatureMapper
    int num=0; 
     parser.parse(value);
     if (parser.isValidTemperature()) {
-   //   int airTemperature = parser.getAirTemperature();
-   //   context.write(new Text(parser.getYear()), new IntWritable(airTemperature));
     } else if (parser.isMalformedTemperature()) {
       System.err.println("Ignoring possibly corrupt input: " + value);
-    // int num= context.getCounter(Temperature.MALFORMED).increment(1);
-      num=num+1;
-      context.write(new Text(parser.getYear()), new IntWritable(num));
+      context.write(new Text(parser.getYear()),one);
     }
   }
 }
-// ^^ MaxTemperatureMapperV4

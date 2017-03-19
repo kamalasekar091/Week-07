@@ -11,7 +11,10 @@ public class NcdcRecordParser {
   private String quality;
   
   public void parse(String record) {
-    year = record.substring(15, 19);
+   String Station_ID = record.substring(4, 10);
+    String Station_identifier= record.substring(10,15);  
+    year = Station_ID+"-"+Station_identifier;
+ //   year = record.substring(15, 19);
     airTemperatureMalformed = false;
     // Remove leading plus sign as parseInt doesn't like them (pre-Java 7)
     if (record.charAt(87) == '+') { 
